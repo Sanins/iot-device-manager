@@ -1,8 +1,13 @@
-import { deleteDevice, getDeviceDetails, listAllDevices, registerDevice, updateDeviceStatus } from "../controllers/deviceController";
+import {
+  deleteDevice,
+  getDeviceDetails,
+  listAllDevices,
+  registerDevice,
+  updateDeviceStatus,
+} from "../controllers/deviceController";
 import express from "express";
 
 const deviceRoutes = (router: express.Router) => {
-
   router.post("/devices", registerDevice);
 
   router.get("/devices", listAllDevices);

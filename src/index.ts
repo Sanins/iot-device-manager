@@ -14,7 +14,7 @@ app.use(express.json());
 setupSwaggerDocs(app);
 
 mongoose
-  .connect('mongodb://mongo:27017/homeLink')
+  .connect("mongodb://mongo:27017/homeLink")
   .then(() => {
     console.log("MongoDB connected to the backend successfully");
   })

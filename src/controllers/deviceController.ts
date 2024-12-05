@@ -18,13 +18,23 @@ export const registerDevice = async (
   }
 };
 
-export const listAllDevices = async (req: Request, res: Response): Promise<void> => {
+export const listAllDevices = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const { page = 1, perPage = 10, orderType = OrderType.ASC, search = "" } = req.query;
+    const {
+      page = 1,
+      perPage = 10,
+      orderType = OrderType.ASC,
+      search = "",
+    } = req.query;
 
-    const validOrderType = Object.values(OrderType).includes(orderType as OrderType)
-  ? (orderType as OrderType)
-  : OrderType.ASC;
+    const validOrderType = Object.values(OrderType).includes(
+      orderType as OrderType
+    )
+      ? (orderType as OrderType)
+      : OrderType.ASC;
 
     const devices = await DeviceService.listAllDevices(
       Number(page),
@@ -49,13 +59,13 @@ export const getDeviceDetails = async (
     const validation = validateDeviceId(deviceId);
     if (!validation.valid) {
       res.status(400).json({ error: validation.error });
-      return 
+      return;
     }
 
     const deviceDetails = await DeviceService.getDeviceDetails(deviceId);
 
     if (!deviceDetails) {
-      res.status(404).json({ error: 'Device not found' });
+      res.status(404).json({ error: "Device not found" });
       return;
     }
 
@@ -75,7 +85,7 @@ export const updateDeviceStatus = async (
   const validation = validateDeviceId(deviceId);
   if (!validation.valid) {
     res.status(400).json({ error: validation.error });
-    return 
+    return;
   }
 
   const validStatuses = [DeviceStatus.ACTIVE, DeviceStatus.INACTIVE];
@@ -93,7 +103,10 @@ export const updateDeviceStatus = async (
       return;
     }
 
-    const updatedDevice = await DeviceService.updateDeviceStatus(deviceId, status);
+    const updatedDevice = await DeviceService.updateDeviceStatus(
+      deviceId,
+      status
+    );
 
     if (!updatedDevice) {
       res.status(500).json({ error: "Failed to update device status" });
@@ -115,14 +128,14 @@ export const deleteDevice = async (
   const validation = validateDeviceId(deviceId);
   if (!validation.valid) {
     res.status(400).json({ error: validation.error });
-    return 
+    return;
   }
 
   try {
     const device = await DeviceService.findDeviceById(deviceId);
     if (!device) {
-      res.status(404).json({ error: 'Device not found' });
-      return
+      res.status(404).json({ error: "Device not found" });
+      return;
     }
 
     const result = await DeviceService.deleteDevice(deviceId);

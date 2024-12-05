@@ -16,7 +16,7 @@ export const listAllDevices = async (
   page: number,
   perPage: number,
   orderType: OrderType,
-  search: string
+  search: string,
 ) => {
   try {
     const skip = (page - 1) * perPage;
@@ -64,7 +64,6 @@ export const getDeviceDetails = async (uniqueIdentifier: string) => {
   }
 };
 
-
 export const updateDeviceStatus = async (
   deviceId: string,
   status: DeviceStatus,
@@ -73,7 +72,7 @@ export const updateDeviceStatus = async (
     const updatedDevice = await Device.findByIdAndUpdate(
       deviceId,
       { status },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     return updatedDevice;
@@ -101,7 +100,7 @@ export const findDeviceById = async (deviceId: string) => {
     const device = await Device.findById(deviceId);
     return device;
   } catch (error) {
-    console.log('error', error);
+    console.log("error", error);
     throw new Error(`Error finding device: ${error.message}`);
   }
 };
