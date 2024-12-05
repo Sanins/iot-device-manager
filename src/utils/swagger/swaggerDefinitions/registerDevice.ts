@@ -1,5 +1,3 @@
-// src/utils/swaggerDefinitions.ts
-
 /**
  * @swagger
  * /api/v1/devices:

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Device, { IDevice } from "../models/Device";
+import Device, { DeviceStatus, IDevice } from "../models/Device";
 
 export const registerDevice = async (deviceData: IDevice) => {
   try {
@@ -33,9 +33,18 @@ export const getDeviceDetails = async (uniqueIdentifier: string) => {
 };
 
 
-export const updateDeviceStatus = async () => {
+export const updateDeviceStatus = async (
+  deviceId: string,
+  status: DeviceStatus,
+): Promise<IDevice | null> => {
   try {
-    return 'success';
+    const updatedDevice = await Device.findByIdAndUpdate(
+      deviceId,
+      { status },
+      { new: true, runValidators: true }
+    );
+
+    return updatedDevice;
   } catch (error) {
     throw new Error(`Error updating device: ${error.message}`);
   }

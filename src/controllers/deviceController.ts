@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as DeviceService from "../services/deviceService";
-import { IDevice } from "models/Device";
+import { DeviceStatus, IDevice } from "models/Device";
 import { validateDeviceId } from "./../utils/validateDeviceId/validateDeviceId";
 
 export const registerDevice = async (
@@ -60,9 +60,38 @@ export const updateDeviceStatus = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const { deviceId } = req.params;
+  const { status } = req.body;
+
+  const validation = validateDeviceId(deviceId);
+  if (!validation.valid) {
+    res.status(400).json({ error: validation.error });
+    return 
+  }
+
+  const validStatuses = [DeviceStatus.ACTIVE, DeviceStatus.INACTIVE];
+  if (!validStatuses.includes(status)) {
+    res.status(400).json({
+      error: `Invalid status. Status must be one of: ${validStatuses.join(", ")}`,
+    });
+    return;
+  }
+
   try {
-    const newProduct = await DeviceService.updateDeviceStatus();
-    res.status(200).json(newProduct);
+    const device = await DeviceService.findDeviceById(deviceId);
+    if (!device) {
+      res.status(404).json({ error: "Device not found" });
+      return;
+    }
+
+    const updatedDevice = await DeviceService.updateDeviceStatus(deviceId, status);
+
+    if (!updatedDevice) {
+      res.status(500).json({ error: "Failed to update device status" });
+      return;
+    }
+
+    res.status(200).json(updatedDevice);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

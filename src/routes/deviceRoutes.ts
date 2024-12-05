@@ -10,10 +10,8 @@ const deviceRoutes = (router: express.Router) => {
 
   router.get("/devices/:deviceId", getDeviceDetails);
 
-  // Route for updating device status by ID
-  router.put("/devices/:deviceId", updateDeviceStatus);
+  router.patch("/devices/:deviceId", updateDeviceStatus);
 
-  // Route for deleting a device by ID
   router.delete("/devices/:deviceId", deleteDevice);
 };
 
