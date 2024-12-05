@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Device, { IDevice } from "../models/Device";
 
 export const registerDevice = async (deviceData: IDevice) => {
@@ -25,10 +26,6 @@ export const getDeviceDetails = async (uniqueIdentifier: string) => {
   try {
     const device = await Device.findOne({ _id: uniqueIdentifier });
 
-    if (!device) {
-      throw new Error("Device not found");
-    }
-
     return device;
   } catch (error) {
     throw new Error(`Error getting device details: ${error.message}`);
@@ -44,12 +41,26 @@ export const updateDeviceStatus = async () => {
   }
 };
 
-
-export const deleteDevice = async () => {
+export const deleteDevice = async (deviceId: string) => {
   try {
-    return 'success';
+    const result = await Device.deleteOne({ _id: deviceId });
+
+    if (result.deletedCount === 0) {
+      throw new Error("Device not found or already deleted");
+    }
+
+    return { message: "Device deleted successfully", deviceId };
   } catch (error) {
     throw new Error(`Error deleting device: ${error.message}`);
   }
 };
 
+export const findDeviceById = async (deviceId: string) => {
+  try {
+    const device = await Device.findById(deviceId);
+    return device;
+  } catch (error) {
+    console.log('error', error);
+    throw new Error(`Error finding device: ${error.message}`);
+  }
+};

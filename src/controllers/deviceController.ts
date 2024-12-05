@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as DeviceService from "../services/deviceService";
 import { IDevice } from "models/Device";
+import { validateDeviceId } from "./../utils/validateDeviceId/validateDeviceId";
 
 export const registerDevice = async (
   req: Request,
@@ -36,6 +37,12 @@ export const getDeviceDetails = async (
   try {
     const { deviceId } = req.params;
 
+    const validation = validateDeviceId(deviceId);
+    if (!validation.valid) {
+      res.status(400).json({ error: validation.error });
+      return 
+    }
+
     const deviceDetails = await DeviceService.getDeviceDetails(deviceId);
 
     if (!deviceDetails) {
@@ -65,9 +72,24 @@ export const deleteDevice = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const { deviceId } = req.params;
+
+  const validation = validateDeviceId(deviceId);
+  if (!validation.valid) {
+    res.status(400).json({ error: validation.error });
+    return 
+  }
+
   try {
-    const newProduct = await DeviceService.deleteDevice();
-    res.status(200).json(newProduct);
+    const device = await DeviceService.findDeviceById(deviceId);
+    if (!device) {
+      res.status(404).json({ error: 'Device not found' });
+      return
+    }
+
+    const result = await DeviceService.deleteDevice(deviceId);
+
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
