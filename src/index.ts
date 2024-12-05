@@ -1,9 +1,10 @@
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
-import routes from "routes";
+import routes from "./routes";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import mongoose from "mongoose";
 
 const app = express();
 
@@ -47,6 +48,13 @@ app.get("/", async (req: express.Request, res: express.Response) => {
     console.log(err);
   }
 });
+
+mongoose
+  .connect('mongodb://mongo:27017/homeLink')
+  .then(() => {
+    console.log("MongoDB connected to the backend successfully");
+  })
+  .catch((err) => console.log(err));
 
 // Serve other routes
 app.use("/api/v1/", routes());
