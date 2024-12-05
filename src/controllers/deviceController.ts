@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as DeviceService from "../services/deviceService";
-import { DeviceStatus, IDevice } from "models/Device";
+import { DeviceStatus, IDevice, OrderType } from "../models/Device";
 import { validateDeviceId } from "./../utils/validateDeviceId/validateDeviceId";
 
 export const registerDevice = async (
@@ -18,13 +18,22 @@ export const registerDevice = async (
   }
 };
 
-export const listAllDevices = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const listAllDevices = async (req: Request, res: Response): Promise<void> => {
   try {
-    const newProduct = await DeviceService.listAllDevices();
-    res.status(200).json(newProduct);
+    const { page = 1, perPage = 10, orderType = OrderType.ASC, search = "" } = req.query;
+
+    const validOrderType = Object.values(OrderType).includes(orderType as OrderType)
+  ? (orderType as OrderType)
+  : OrderType.ASC;
+
+    const devices = await DeviceService.listAllDevices(
+      Number(page),
+      Number(perPage),
+      validOrderType,
+      search.toString()
+    );
+
+    res.status(200).json(devices);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -5,7 +5,6 @@ const deviceRoutes = (router: express.Router) => {
 
   router.post("/devices", registerDevice);
 
-  // Route for listing all devices
   router.get("/devices", listAllDevices);
 
   router.get("/devices/:deviceId", getDeviceDetails);

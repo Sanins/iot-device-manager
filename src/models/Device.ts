@@ -5,6 +5,11 @@ export enum DeviceStatus {
     INACTIVE = "inactive",
 }
 
+export enum OrderType {
+    ASC = "asc",
+    DESC = "desc",
+}
+
 export interface IDevice extends Document {
   name: string;
   type: string;
