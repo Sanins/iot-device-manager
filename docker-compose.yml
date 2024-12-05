@@ -7,7 +7,7 @@ services:
     ports:
       - "8800:8800"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/iot-device-db
+      - MONGO_URI=mongodb://mongo:27017/homeLink
     depends_on:
       - mongo
     volumes:

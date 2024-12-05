@@ -1,13 +1,17 @@
 import { Request, Response } from "express";
 import * as DeviceService from "../services/deviceService";
+import { IDevice } from "models/Device";
 
 export const registerDevice = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const newProduct = await DeviceService.registerDevice();
-    res.status(200).json(newProduct);
+    const deviceData: IDevice = req.body;
+
+    const newDevice = await DeviceService.registerDevice(deviceData);
+
+    res.status(201).json(newDevice);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -1,6 +1,12 @@
-export const registerDevice = async () => {
+import Device, { IDevice } from "../models/Device";
+
+export const registerDevice = async (deviceData: IDevice) => {
   try {
-    return 'success';
+    const newDevice = new Device(deviceData);
+
+    await newDevice.save();
+
+    return newDevice;
   } catch (error) {
     throw new Error(`Error registering device: ${error.message}`);
   }

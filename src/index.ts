@@ -22,32 +22,16 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:8800",
+        url: "http://localhost:8800/",
       },
     ],
   },
-  apis: ["./src/index.ts"],
+  apis: ["./src/routes/**/*.ts"],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-/**
- * @swagger
- * /:
- *   get:
- *     summary: Test the root endpoint
- *     responses:
- *       200:
- *         description: A successful response
- */
-app.get("/", async (req: express.Request, res: express.Response) => {
-  try {
-    res.send("is this working as expected");
-  } catch (err) {
-    console.log(err);
-  }
-});
 
 mongoose
   .connect('mongodb://mongo:27017/homeLink')
@@ -56,7 +40,6 @@ mongoose
   })
   .catch((err) => console.log(err));
 
-// Serve other routes
 app.use("/api/v1/", routes());
 
 const PORT = 8800;
