@@ -34,8 +34,16 @@ export const getDeviceDetails = async (
   res: Response
 ): Promise<void> => {
   try {
-    const newProduct = await DeviceService.getDeviceDetails();
-    res.status(200).json(newProduct);
+    const { deviceId } = req.params;
+
+    const deviceDetails = await DeviceService.getDeviceDetails(deviceId);
+
+    if (!deviceDetails) {
+      res.status(404).json({ error: 'Device not found' });
+      return;
+    }
+
+    res.status(200).json(deviceDetails);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

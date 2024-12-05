@@ -21,9 +21,15 @@ export const listAllDevices = async () => {
 };
 
 
-export const getDeviceDetails = async () => {
+export const getDeviceDetails = async (uniqueIdentifier: string) => {
   try {
-    return 'success';
+    const device = await Device.findOne({ _id: uniqueIdentifier });
+
+    if (!device) {
+      throw new Error("Device not found");
+    }
+
+    return device;
   } catch (error) {
     throw new Error(`Error getting device details: ${error.message}`);
   }
