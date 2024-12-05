@@ -1,6 +1,7 @@
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import routes from "routes";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
@@ -46,6 +47,9 @@ app.get("/", async (req: express.Request, res: express.Response) => {
     console.log(err);
   }
 });
+
+// Serve other routes
+app.use("/api/v1/", routes());
 
 const PORT = 8800;
 app.listen(PORT, () => {
