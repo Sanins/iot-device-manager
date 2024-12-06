@@ -1,23 +1,21 @@
-# Use an official Node.js runtime as a parent image
+# Use an official Node.js image
 FROM node:18-alpine
 
 # Set the working directory inside the container
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock if you use yarn)
-COPY package*.json ./
+# Copy package.json and yarn.lock (if using Yarn) or package-lock.json
+COPY package.json ./
+COPY yarn.lock ./
 
 # Install dependencies
-RUN npm install
+RUN yarn install
 
-# Copy the rest of the application files
+# Copy the rest of the project files
 COPY . .
 
-# Build the TypeScript code
-RUN npm run build
+# Install TypeScript globally (if necessary)
+RUN yarn global add typescript ts-node
 
-# Expose the port the app runs on
-EXPOSE 8800
-
-# Command to run the application after build
-CMD ["npm", "start"]
+# Command to run the seed script using ts-node (TypeScript execution)
+CMD ["ts-node", "src/seed/seed.ts"]
