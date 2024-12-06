@@ -5,7 +5,7 @@ import { validateDeviceId } from "./../utils/validateDeviceId/validateDeviceId";
 
 export const registerDevice = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const deviceData: IDevice = req.body;
@@ -20,7 +20,7 @@ export const registerDevice = async (
 
 export const listAllDevices = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const {
@@ -31,7 +31,7 @@ export const listAllDevices = async (
     } = req.query;
 
     const validOrderType = Object.values(OrderType).includes(
-      orderType as OrderType
+      orderType as OrderType,
     )
       ? (orderType as OrderType)
       : OrderType.ASC;
@@ -40,7 +40,7 @@ export const listAllDevices = async (
       Number(page),
       Number(perPage),
       validOrderType,
-      search.toString()
+      search.toString(),
     );
 
     res.status(200).json(devices);
@@ -51,7 +51,7 @@ export const listAllDevices = async (
 
 export const getDeviceDetails = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { deviceId } = req.params;
@@ -77,7 +77,7 @@ export const getDeviceDetails = async (
 
 export const updateDeviceStatus = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const { deviceId } = req.params;
   const { status } = req.body;
@@ -105,7 +105,7 @@ export const updateDeviceStatus = async (
 
     const updatedDevice = await DeviceService.updateDeviceStatus(
       deviceId,
-      status
+      status,
     );
 
     if (!updatedDevice) {
@@ -121,7 +121,7 @@ export const updateDeviceStatus = async (
 
 export const deleteDevice = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   const { deviceId } = req.params;
 
