@@ -33,3 +33,19 @@ If you’d like to seed the MongoDB database with sample data, follow these step
 To stop all services
 
 `docker-compose down`
+
+## Linting and formatting
+
+This project uses ESLint and Prettier to ensure code quality and consistent formatting.
+
+To use the linting service use the command
+
+`yarn lint`
+
+## Testing
+
+Jest is used as the testing framework
+
+Use the following command to test the project
+
+`yarn test`

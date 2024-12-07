@@ -13,6 +13,7 @@ app.use(express.json());
 
 setupSwaggerDocs(app);
 
+// I would put configs in env files but since it's a simple example I'm hardcoding it
 mongoose
   .connect("mongodb://mongo:27017/homeLink")
   .then(() => {
