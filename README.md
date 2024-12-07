@@ -34,6 +34,13 @@ To stop all services
 
 `docker-compose down`
 
+## Swagger (api documentation)
+
+Swagger provides an easy way to explore and test the API endpoints directly in your browser.
+
+To access the Swagger UI, start the server and visit:
+`http://localhost:8800/api-docs/`
+
 ## Linting and formatting
 
 This project uses ESLint and Prettier to ensure code quality and consistent formatting.
